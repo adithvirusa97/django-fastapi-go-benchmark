@@ -1,0 +1,91 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: benchmark
+      POSTGRES_USER: benchmark
+      POSTGRES_PASSWORD: benchmark
+    cpus: 1.0
+    mem_limit: 512m
+    ports: ["5432:5432"]
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U benchmark -d benchmark"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  django:
+    build: ./django
+    environment: &db_env
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: benchmark
+      DB_USER: benchmark
+      DB_PASSWORD: benchmark
+    ports: ["8003:8000"]
+    depends_on:
+      postgres: {condition: service_healthy}
+    cpus: 1.0
+    mem_limit: 512m
+
+  fastapi:
+    build: ./fastapi
+    environment: *db_env
+    ports: ["8001:8000"]
+    depends_on:
+      postgres: {condition: service_healthy}
+    cpus: 1.0
+    mem_limit: 512m
+
+  golang:
+    build: ./golang
+    environment: *db_env
+    ports: ["8002:8000"]
+    depends_on:
+      postgres: {condition: service_healthy}
+    cpus: 1.0
+    mem_limit: 512m
+
+  prometheus:
+    image: prom/prometheus:v3.6.0
+    ports: ["9090:9090"]
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    depends_on: [django, fastapi, golang]
+
+  grafana:
+    image: grafana/grafana:12.2.0
+    ports: ["3000:3000"]
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    depends_on: [prometheus]
+
+  k6:
+    image: grafana/k6:latest
+    user: "0:0"
+    cpus: 2.0
+    mem_limit: 512m
+    volumes:
+      - ./k6:/scripts:ro
+      - ./results:/results
+    depends_on: [django, fastapi, golang]
+    profiles: [benchmark]
+
+  analyzer:
+    build: ./analysis
+    volumes:
+      - ./results:/results
+    profiles: [benchmark]
+
+volumes:
+  postgres_data:
+  grafana_data:

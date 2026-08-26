@@ -1,0 +1,8 @@
+{
+  "annotations":{"list":[]},"editable":true,"graphTooltip":0,"panels":[
+    {"type":"timeseries","title":"Request Rate","gridPos":{"h":8,"w":24,"x":0,"y":0},"targets":[{"expr":"sum by (job) (rate(http_requests_total[1m]))","legendFormat":"{{job}}"}]},
+    {"type":"timeseries","title":"Process CPU","gridPos":{"h":8,"w":12,"x":0,"y":8},"targets":[{"expr":"process_cpu_seconds_total","legendFormat":"{{job}}"}]},
+    {"type":"timeseries","title":"Process Memory","gridPos":{"h":8,"w":12,"x":12,"y":8},"targets":[{"expr":"process_resident_memory_bytes","legendFormat":"{{job}}"}]
+  ],
+  "schemaVersion":39,"title":"Backend Benchmark","version":1
+}
