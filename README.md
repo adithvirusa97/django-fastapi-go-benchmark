@@ -25,7 +25,7 @@ docker compose up -d --build
 Check:
 
 ```bash
-curl http://localhost:8000/health
+curl http://localhost:8003/health
 curl http://localhost:8001/health
 curl http://localhost:8002/health
 ```
