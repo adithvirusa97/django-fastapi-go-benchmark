@@ -24,6 +24,12 @@ benchmark-fastapi:
 		-e VUS=$${VUS:-50} \
 		-e DURATION=$${DURATION:-30s} \
 		k6 run /scripts/benchmark.js
+benchmark-fastapi-granian:
+	docker compose --profile benchmark run --rm \
+		-e TARGET=fastapi-granian \
+		-e VUS=$${VUS:-50} \
+		-e DURATION=$${DURATION:-30s} \
+		k6 run /scripts/benchmark.js
 
 benchmark-golang:
 	docker compose --profile benchmark run --rm \

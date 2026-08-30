@@ -4,6 +4,7 @@ import { check } from 'k6';
 const TARGETS = {
   django: 'http://django:8000',
   fastapi: 'http://fastapi:8000',
+  'fastapi-granian': 'http://fastapi-granian:8000',
   golang: 'http://golang:8000',
 };
 

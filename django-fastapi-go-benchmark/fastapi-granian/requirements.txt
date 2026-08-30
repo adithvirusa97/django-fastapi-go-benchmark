@@ -1,0 +1,6 @@
+fastapi==0.116.1
+granian==2.8.1
+uvloop
+msgspec
+psycopg[binary,pool]==3.2.9
+prometheus-client==0.22.1

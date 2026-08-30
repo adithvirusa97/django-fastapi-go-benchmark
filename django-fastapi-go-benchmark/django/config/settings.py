@@ -8,7 +8,6 @@ INSTALLED_APPS = ['django.contrib.contenttypes', 'benchmark']
 MIDDLEWARE = []
 DATABASES = {
     'default': {
-        "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": os.getenv("DB_NAME"),
         "USER": os.getenv("DB_USER"),
@@ -16,9 +15,9 @@ DATABASES = {
         "HOST": os.getenv("DB_HOST"),
         "PORT": os.getenv("DB_PORT"),
 
-        "CONN_MAX_AGE": 0,
-        "CONN_HEALTH_CHECKS": False,
-    }
+
+        "CONN_MAX_AGE": 60,
+        "CONN_HEALTH_CHECKS": True,
     }
 }
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
