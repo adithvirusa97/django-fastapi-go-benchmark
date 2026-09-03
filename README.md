@@ -70,6 +70,4 @@ Prometheus scrapes `/metrics` from all three applications. Grafana is pre-provis
 
 Note: the application metric sets are intentionally minimal in this starter. For a production-quality observability comparison, add the same HTTP request counters/histograms to all three applications with identical metric names and labels.
 
-## LinkedIn-ready evidence
 
-Publish the methodology, environment, raw results, p95/p99 latency, error rate and charts. Avoid claims such as “Go can handle X requests” without stating the exact endpoint, hardware, concurrency, database behavior and server configuration.
