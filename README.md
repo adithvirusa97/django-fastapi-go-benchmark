@@ -52,17 +52,6 @@ Results are written to `results/`:
 - `summary.csv`
 - `charts/*.png`
 
-## Important methodology
-
-Do not publish the first numbers as universal framework limits. Repeat each test several times, warm the services first, keep CPU/RAM limits identical, keep PostgreSQL identical, and benchmark one target at a time. Record the exact Docker, OS, CPU, RAM, versions, worker counts, VUs and test duration with every result.
-
-For a stronger study, add separate scenarios for:
-
-1. `/health` — framework/server overhead, no database.
-2. `/users/{id}` — PostgreSQL I/O + JSON serialization.
-3. CPU-heavy endpoint — application computation.
-4. POST endpoint — validation + database write.
-5. Mixed workload — realistic traffic distribution.
 
 ## Prometheus/Grafana
 
